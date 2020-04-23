@@ -27,11 +27,23 @@ app.use(
 
 app.use(
   session({
+    cookie: {
+      secure: true,
+      maxAge: 60000,
+    },
+    store: new RedisStore(),
     secret: "Our little secret.",
     resave: false,
     saveUninitialized: false,
   })
 );
+
+app.use(function(req,res,next){
+  if(!req.session){
+      return next(new Error('Oh no')) //handle error
+  }
+  next() //otherwise continue
+  });
 
 app.use(passport.initialize());
 app.use(passport.session());
