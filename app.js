@@ -36,10 +36,14 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect("mongodb://localhost:27017/userDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  "mongodb+srv://kash123:kash123@users-xbc0s.mongodb.net/test?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  }
+);
 
 mongoose.set("useCreateIndex", true);
 
@@ -234,6 +238,11 @@ app.post("/submit",(req,res)=>{
   });
 });
 
-app.listen(3000, () => {
-  console.log("server strated on port 3000.");
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
+
+app.listen(port, (req, res) => {
+    console.log("server started successfully");
 });
